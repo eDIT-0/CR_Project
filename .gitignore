@@ -1,0 +1,45 @@
+# =============== UNITY GENERATED ===============
+[Ll]ibrary/
+[Tt]emp/
+[Oo]bj/
+[Bb]uild/
+[Bb]uilds/
+[Ll]ogs/
+[Uu]ser[Ss]ettings/
+[Mm]emoryCaptures/
+
+# =============== VISUAL STUDIO / RIDER / VS CODE ===============
+.vs/
+.idea/
+.vscode/
+*.csproj
+*.unityproj
+*.sln
+*.suo
+*.tmp
+*.user
+*.userprefs
+*.pidb
+*.booproj
+*.svd
+*.pdb
+*.mdb
+*.opendb
+*.VC.db
+
+# =============== OS GENERATED ===============
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# =============== UNITY PACKAGE MANAGER ===============
+[Pp]ackages/packages-lock.json
+[Pp]ackages/*.override
+
+# =============== CRASH REPORTS ===============
+sysinfo.txt
+crashlytics-build.properties
