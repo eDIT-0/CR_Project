@@ -20,7 +20,34 @@ public class PlayerMovement : MonoBehaviour
     private void Start()
     {
         TeleportToTile(currentTile);
-        Debug.Log($"🧭 Игрок стартовал лицом на {currentDirection}");
+        SetInitialDirection();   // ← новая строка
+    }
+
+    private void SetInitialDirection()
+    {
+        if (generator == null)
+        {
+            currentDirection = Direction.East;
+            return;
+        }
+
+        // Приоритет направлений (можно поменять)
+        Direction[] priority = { Direction.North, Direction.East, Direction.South, Direction.West };
+
+        foreach (var dir in priority)
+        {
+            Vector2Int neighbor = generator.GetNeighborTile(currentTile, dir);
+            if (generator.IsPassableTile(neighbor))
+            {
+                currentDirection = dir;
+                Debug.Log($"Игрок стартовал лицом на {currentDirection} (к открытой клетке)");
+                return;
+            }
+        }
+
+        // На всякий случай (если вдруг все направления закрыты)
+        currentDirection = Direction.East;
+        Debug.LogWarning("Нет открытого направления от стартовой клетки!");
     }
 
     private void Update()
