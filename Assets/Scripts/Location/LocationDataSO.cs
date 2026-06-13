@@ -7,6 +7,12 @@ public class LocationDataSO : ScriptableObject
     public string locationName = "Новая локация";
     [TextArea] public string description = "Описание локации";
 
+    [Header("Идентификатор локации")]
+    public string locationID;          //например: "slums", "factory", "dungeon"
+
+    [Header("Сложность")]
+    public Difficulty difficulty = Difficulty.Normal;
+
     [Header("Генерация лабиринта")]
     public int roomCountX = 8;
     public int roomCountY = 8;

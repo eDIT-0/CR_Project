@@ -164,6 +164,52 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &188722252
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 188722255}
+  - component: {fileID: 188722254}
+  m_Layer: 0
+  m_Name: QuestManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &188722254
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 188722252}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bae9635005c4294498b199d23f1e4ff4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::QuestManager
+  activeSideQuests:
+  - {fileID: 11400000, guid: 3cfff2098de8bd742911a89b16a978de, type: 2}
+--- !u!4 &188722255
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 188722252}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.24098, y: -0, z: 0.15486}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &300196422
 GameObject:
   m_ObjectHideFlags: 0
@@ -194,6 +240,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RandomEventSystem
   locationData: {fileID: 11400000, guid: da8a5b6f5b4d9e24baee15ce589b68a2, type: 2}
+  dungeonGenerator: {fileID: 1296294962}
+  playerMovement: {fileID: 1151169573}
 --- !u!4 &300196424
 Transform:
   m_ObjectHideFlags: 0
@@ -761,6 +809,7 @@ MonoBehaviour:
   randomEventChance: 0.28
   rewardChance: 0.3
   emptyChance: 0.301
+  difficulty: 1
   minRewardCount: 2
   merchantChance: 0.8
   minQuestDistance: 4
@@ -793,3 +842,4 @@ SceneRoots:
   - {fileID: 300196424}
   - {fileID: 1070486272}
   - {fileID: 21770637}
+  - {fileID: 188722255}

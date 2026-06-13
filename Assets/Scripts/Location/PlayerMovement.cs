@@ -20,7 +20,7 @@ public class PlayerMovement : MonoBehaviour
     private void Start()
     {
         TeleportToTile(currentTile);
-        SetInitialDirection();   // ← новая строка
+        SetInitialDirection();   
     }
 
     private void SetInitialDirection()
@@ -168,6 +168,19 @@ public class PlayerMovement : MonoBehaviour
                     break;
                 case EventType.Empty:
                     Debug.Log("🌿 Пустая клетка (передышка)");
+                    break;
+                case EventType.SideQuest:
+                    Debug.Log("Наступил на тайл сайд-квеста!");
+
+                    if (tile.sideQuestData != null)
+                    {
+                        Debug.Log($"Сработал сайд-квест: {tile.sideQuestData.questID}");
+                        // Здесь позже будет запуск VN-сцены / события
+                    }
+
+                    // === Очищаем тайл после срабатывания ===
+                    tile.eventType = EventType.Empty;
+                    tile.sideQuestData = null;
                     break;
             }
         }

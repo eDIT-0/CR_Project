@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public enum TileType { Wall, Floor }
-public enum EventType { Empty, RandomEvent, Enemy, Reward, Quest, Merchant, Exit, WallHole }
+public enum EventType { Empty, RandomEvent, Enemy, Reward, Quest, Merchant, Exit, WallHole, SideQuest }
 
 public enum Direction
 {
@@ -20,6 +20,9 @@ public class TileData
     public TileType type = TileType.Wall;
     public EventType eventType = EventType.Empty;
     public bool visited = false;
+
+    [NonSerialized]                    // Не сохраняем в инспекторе
+    public SideQuestEventSO sideQuestData;   // Храним данные квеста только для SideQuest тайлов
 }
 
 public class DungeonGenerator : MonoBehaviour
@@ -36,6 +39,9 @@ public class DungeonGenerator : MonoBehaviour
     [SerializeField, Range(0f, 1f)] private float randomEventChance = 0.2f;
     [SerializeField, Range(0f, 1f)] private float rewardChance = 0.25f;
     [SerializeField, Range(0f, 1f)] private float emptyChance = 0.4f;
+
+    [Header("Текущая сложность уровня")]
+    public Difficulty difficulty = Difficulty.Normal;
 
     [Header("Гарантированные награды и торговец")]
     [SerializeField] private int minRewardCount = 2;           // минимум наград
@@ -178,8 +184,56 @@ public class DungeonGenerator : MonoBehaviour
         }
     }
 
+    /// Пытается разместить тайл сайд-квеста ДО случайного назначения обычных событий.
+    private void TryPlaceSideQuestTile()
+    {
+        if (QuestManager.Instance == null || locationData == null)
+            return;
+
+        if (string.IsNullOrEmpty(locationData.locationID))
+            return;
+
+        SideQuestEventSO sideQuest = QuestManager.Instance.GetActiveSideQuest(
+            locationData.locationID,
+            locationData.difficulty
+        );
+
+        if (sideQuest == null)
+            return;
+
+        int targetDistance = Mathf.Max(1, locationData.minQuestDistance - 2);
+
+        Vector2Int sideQuestRoom = Vector2Int.zero;
+        int attempts = 0;
+
+        do
+        {
+            sideQuestRoom = new Vector2Int(
+                UnityEngine.Random.Range(0, roomCountX),
+                UnityEngine.Random.Range(0, roomCountY)
+            );
+            attempts++;
+        }
+        while (Mathf.Abs(sideQuestRoom.x) + Mathf.Abs(sideQuestRoom.y) < targetDistance && attempts < 150);
+
+        Vector2Int tilePos = RoomToTile(sideQuestRoom);
+
+        if (IsPassableTile(tilePos))
+        {
+            var tile = tiles[tilePos.x, tilePos.y];
+
+            if (tile.eventType == EventType.Empty || tile.eventType == EventType.RandomEvent)
+            {
+                tile.eventType = EventType.SideQuest;
+                tile.sideQuestData = sideQuest;           // ← сохраняем данные квеста прямо в тайл
+                Debug.Log($"[SideQuest] Размещён: {sideQuest.questID} в тайле {tilePos}");
+            }
+        }
+    }
+
     private void AssignEventsToRooms()
     {
+        TryPlaceSideQuestTile();
         // 1. Случайное назначение ивентов на все Floor-тайлы
         for (int x = 0; x < tileCountX; x++)
         {
